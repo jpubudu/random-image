@@ -1,6 +1,25 @@
 .App {
   text-align: center;
+  background-color: white; /* Set background color to black */
+  color: black; /* Change text color to white for better visibility */
 }
+
+button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 16px;
+  cursor: pointer;
+  background-color: blue; /* Set button background color to blue */
+  color: white; /* Button text color */
+  border: none; /* Remove button border */
+  border-radius: 5px; /* Rounded corners for button */
+}
+
+img {
+  border: 2px solid #ccc;
+  margin-top: 10px;
+}
+
 
 .App-logo {
   height: 40vmin;
