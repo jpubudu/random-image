@@ -1,21 +1,22 @@
 /* Main App styling */
 .App {
   text-align: center;
-  color: white; /* Text color for contrast */
-  min-height: 100vh; /* Full screen height */
+  color: white;
+  min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   overflow: hidden;
   position: relative;
+  gap: 1px; /* Add spacing between elements */
 }
 
 /* Set the image as the background */
 body {
   margin: 0;
   background: url('background.jpg') no-repeat center center fixed;
-  background-size: cover; /* Ensure the image covers the entire screen */
+  background-size: cover;
 }
 
 /* Subtle grid effect overlay */
@@ -26,7 +27,7 @@ body {
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.4); /* Slight dark overlay for text readability */
+  background: rgba(0, 0, 0, 0.4);
   background-image:
     linear-gradient(0deg, transparent 24%, rgba(0, 255, 255, 0.1) 25%, transparent 26%, transparent 74%, rgba(0, 255, 255, 0.1) 75%, transparent 76%, transparent),
     linear-gradient(90deg, transparent 24%, rgba(0, 255, 255, 0.1) 25%, transparent 26%, transparent 74%, rgba(0, 255, 255, 0.1) 75%, transparent 76%, transparent);
@@ -35,59 +36,81 @@ body {
   z-index: -1;
 }
 
-/* Button styling */
+/* Tab Navigation Styling */
+.tabs {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.tabs button {
+  padding: 5px 10px;
+  font-size: 14px;
+  background: linear-gradient(145deg, #1a1a1a, #333);
+  color: #fff;
+  border: 2px solid #00ffff;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+}
+
+.tabs button.active {
+  background: linear-gradient(145deg, #00ffff, #333);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.7);
+}
+
+.tabs button:hover {
+  background: linear-gradient(145deg, #333, #1a1a1a);
+  transform: scale(1.05);
+}
+
+/* Image Wrapper */
+/* Image Styling */
+.image-wrapper img {
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.5), /* Soft glow */
+              0 0 20px rgba(0, 255, 255, 0.3), /* Medium glow */
+              0 0 30px rgba(0, 255, 255, 0.2); /* Strong glow */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Add transition for box-shadow */
+  animation: glow 1.5s infinite alternate; /* Existing glow animation */
+}
+
+
+/* Button Container */
+.button-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px; /* Space between buttons */
+  margin-top: 0px;
+}
+
+/* Button Styling */
 button {
-  margin-top: 10px;
-  padding: 10px 20px; /* Adjusted padding */
-  font-size: 14.4px; /* Adjusted font size */
+  padding: 5px 10px;
+  font-size: 12.4px;
   font-family: 'Poppins', sans-serif;
   cursor: pointer;
   background: linear-gradient(145deg, #1a1a1a, #333);
   color: #fff;
   border: 2px solid #00ffff;
   border-radius: 8px;
-  letter-spacing: 1px;
-  position: relative;
   transition: all 0.3s ease-in-out;
-  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4),
-              0 0 30px rgba(0, 255, 255, 0.2);
+  box-shadow: 0 0 15px rgba(0, 255, 255, 0.4), 0 0 30px rgba(0, 255, 255, 0.2);
 }
 
 button:hover {
   background: linear-gradient(145deg, #333, #1a1a1a);
-  box-shadow: 0 0 25px rgba(0, 255, 255, 0.7),
-              0 0 50px rgba(0, 255, 255, 0.5);
+  box-shadow: 0 0 25px rgba(0, 255, 255, 0.7), 0 0 50px rgba(0, 255, 255, 0.5);
   transform: scale(1.05);
 }
 
 button:active {
   transform: scale(0.98);
   box-shadow: 0 0 10px rgba(0, 255, 255, 0.4);
-}
-
-/* Image Wrapper */
-.image-wrapper {
-  position: relative;
-  width: 325px;
-  height: 500px;
-  margin: 10px auto;
-}
-
-/* Image Styling */
-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 12px;
-  border: 1px solid transparent;
-  box-shadow: 0 0 10px rgba(0, 0, 255, 0.5),
-              0 0 20px rgba(0, 0, 255, 0.3),
-              0 0 30px rgba(0, 0, 255, 0.2);
-  transition: transform 0.3s ease-in-out;
-  animation: glow 1.5s infinite alternate;
-}
-
-img:hover {
-  transform: scale(1.03);
 }
 
 /* Loading Spinner */
@@ -115,16 +138,50 @@ img:hover {
   }
 }
 
-/* Glow Animation */
-@keyframes glow {
-  from {
-    box-shadow: 0 0 5px rgba(0, 0, 255, 0.5),
-                0 0 15px rgba(0, 0, 255, 0.3),
-                0 0 25px rgba(0, 0, 255, 0.2);
-  }
-  to {
-    box-shadow: 0 0 15px rgba(0, 0, 255, 0.7),
-                0 0 25px rgba(0, 0, 255, 0.5),
-                0 0 35px rgba(0, 0, 255, 0.3);
-  }
+/* Word Section Styling for Tab 2 */
+.word-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
+
+.word-section button {
+  padding: 10px 20px;
+  border: 2px solid #00ffff;
+  background: #333;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.word-section button:hover {
+  background: #00ffff;
+  color: black;
+}
+
+.translation {
+  margin-top: 5px;
+  font-size: 18px;
+  color: #00ffff;
+}
+
+
+.all-words {
+  text-align: left; /* Align text to the left */
+  margin: 20px 0; /* Add some margin for spacing */
+  padding: 10px; /* Add some padding for aesthetics */
+  border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+  border-radius: 5px; /* Optional: Rounded corners */
+}
+
+.all-words ul {
+  list-style-type: none; /* Remove default list styling */
+  padding: 0; /* Remove default padding */
+}
+
+.all-words li {
+  margin: 5px 0; /* Space between list items */
+}
+
+
+

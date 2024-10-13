@@ -1,94 +1,207 @@
 import React, { useState } from 'react';
 import './App.css';
+import { categories } from './SwedishPhrases'; // Ensure this file exports a correctly structured categories array
 
 function App() {
-  const images = [
-    "/images/img1.jpg", "/images/img2.jpg", "/images/img3.jpg",
-    "/images/img4.jpg", "/images/img5.jpg", "/images/img6.jpg",
-    "/images/img7.jpg", "/images/img8.jpg", "/images/img9.jpg",
-    "/images/img10.jpg", "/images/img11.jpg", "/images/img12.jpg",
-    "/images/img13.jpg", "/images/img14.jpg", "/images/img15.jpg",
-    "/images/img16.jpg", "/images/img17.jpg", "/images/img18.jpg",
-    "/images/img19.jpg", "/images/img20.jpg", "/images/img21.jpg",
-    "/images/img22.jpg", "/images/img23.jpg", "/images/img24.jpg",
-    "/images/img25.jpg", "/images/img26.jpg", "/images/img27.jpg",
-    "/images/img28.jpg", "/images/img29.jpg", "/images/img30.jpg",
-    "/images/img31.jpg", "/images/img32.jpg", "/images/img33.jpg",
-    "/images/img34.jpg", "/images/img35.jpg", "/images/img36.jpg",
-    "/images/img37.jpg", "/images/img38.jpg", "/images/img39.jpg",
-    "/images/img40.jpg", "/images/img41.jpg", "/images/img42.jpg",
-    "/images/img43.jpg", "/images/img44.jpg", "/images/img45.jpg",
-    "/images/img46.jpg", "/images/img47.jpg", "/images/img48.jpg",
-    "/images/img49.jpg", "/images/img50.jpg", "/images/img51.jpg",
-    "/images/img52.jpg", "/images/img53.jpg", "/images/img54.jpg",
-    "/images/img55.jpg", "/images/img56.jpg", "/images/img57.jpg",
-    "/images/img58.jpg", "/images/img59.jpg", "/images/img60.jpg",
-    "/images/img61.jpg"
-  ];
+  const generateImageArray = (count) => {
+    const images = [];
+    for (let i = 1; i <= count; i++) {
+      images.push(`${process.env.PUBLIC_URL}/images/img${i}.jpg`);
+    }
+    return images;
+  };
+
+  const images = generateImageArray(61);
 
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [loading, setLoading] = useState(false); // Loading state
+  const [loading, setLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState('tab1');
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [challengeWord, setChallengeWord] = useState(null);
+  const [showTranslation, setShowTranslation] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [showAllWords, setShowAllWords] = useState(false);
+  const [categorySetIndex, setCategorySetIndex] = useState(0); // Track current category set
 
-  // Function to play sound effect
   const playSound = () => {
-    const audio = new Audio('/click-sound.mp3'); // Path to the sound file
-    audio.play(); // Play the sound effect
+    const audio = new Audio('/click-sound.mp3');
+    audio.play();
   };
 
-  // Function to load a random image and play sound
   const loadRandomImage = () => {
-    playSound(); // Play the sound effect
-    setLoading(true); // Set loading state to true
-
-    // Simulate a 1 second delay
+    playSound();
+    setLoading(true);
     setTimeout(() => {
       const randomIndex = Math.floor(Math.random() * images.length);
-      setCurrentIndex(randomIndex); // Update the image
-      setLoading(false); // Reset loading state
-    }, 200); // 1-second delay
+      setCurrentIndex(randomIndex);
+      setLoading(false);
+    }, 200);
   };
 
-  // Function to load the first image (img1.jpg)
   const loadFirstImage = () => {
-    playSound(); // Play the sound effect
-    setCurrentIndex(0); // Set index to 0 for img1
+    playSound();
+    setCurrentIndex(0);
   };
 
-  // Function to load the previous image
   const loadPreviousImage = () => {
     if (currentIndex > 0) {
-      playSound(); // Play the sound effect
-      setCurrentIndex(prevIndex => prevIndex - 1); // Decrease index
+      playSound();
+      setCurrentIndex((prevIndex) => prevIndex - 1);
     }
   };
 
-  // Function to load the next image
   const loadNextImage = () => {
     if (currentIndex < images.length - 1) {
-      playSound(); // Play the sound effect
-      setCurrentIndex(prevIndex => prevIndex + 1); // Increase index
+      playSound();
+      setCurrentIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const getRandomWord = () => {
+    playSound();
+    if (selectedCategory) {
+      setIsLoading(true);
+      setTimeout(() => {
+        const randomWord = selectedCategory.words[Math.floor(Math.random() * selectedCategory.words.length)];
+        setChallengeWord(randomWord);
+        setShowTranslation(false);
+        setIsLoading(false);
+      }, 200);
+    }
+  };
+
+  const handleWordClick = () => {
+    getRandomWord(); // Fetch a new random word
+    setShowTranslation(true); // Show the translation when clicked
+  };
+
+  const toggleTranslation = () => {
+    setShowTranslation((prevState) => !prevState);
+  };
+
+  const handleShowAllWords = () => {
+    playSound();
+    setShowAllWords((prevState) => !prevState);
+  };
+
+  const renderTabContent = () => {
+    if (activeTab === 'tab1') {
+      return (
+        <>
+          <h3>Practice Your Words - {currentIndex + 1}</h3>
+          <div className="image-wrapper">
+            {loading && <div className="loading-spinner"></div>}
+            <img
+              src={images[currentIndex]}
+              alt={`Image ${currentIndex + 1}`}
+              style={{ width: '325px', height: '500px' }}
+            />
+          </div>
+          <div className="button-container">
+            <button onClick={loadFirstImage}>1</button>
+            <button onClick={loadPreviousImage} disabled={currentIndex === 0}>←</button>
+            <button onClick={loadRandomImage}>Challenge</button>
+            <button onClick={loadNextImage} disabled={currentIndex === images.length - 1}>→</button>
+          </div>
+        </>
+      );
+    } else if (activeTab === 'tab2') {
+      const categoriesToShow = categories.slice(categorySetIndex * 2, categorySetIndex * 2 + 2); // Show 2 categories
+
+      return (
+        <div className="word-sections">
+          <div className="button-navigation-container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+            <button
+              onClick={() => setCategorySetIndex((prev) => Math.max(prev - 1, 0))}
+              disabled={categorySetIndex === 0}
+              style={{ marginRight: '10px' }}
+            >  ←
+            </button>
+
+            <div className="button-container" style={{ display: 'flex', flexGrow: 1 }}>
+              {categoriesToShow.map((category, index) => (
+                <button
+                  key={index}
+                  onClick={() => {
+                    setSelectedCategory(category);
+                    setChallengeWord(null);
+                    setShowTranslation(false);
+                    setShowAllWords(false);
+                    playSound();
+                  }}
+                  style={{
+                    border: selectedCategory && selectedCategory.name === category.name ? '2px solid limegreen' : '2px solid transparent',
+                    color: 'white',
+                    backgroundColor: 'transparent',
+                    padding: '5px 10px',
+                    margin: '5px',
+                    cursor: 'pointer',
+                  }}
+                >
+                  {category.name}
+                </button>
+              ))}
+            </div>
+
+            <button
+              onClick={() => setCategorySetIndex((prev) => Math.min(prev + 1, Math.floor(categories.length / 2) - 1))}
+              disabled={categorySetIndex >= Math.floor(categories.length / 2) - 1}
+              style={{ marginLeft: '10px' }}
+            > →
+            </button>
+          </div>
+
+          {selectedCategory && (
+            <>
+              <div className="challenge-word">
+                {isLoading ? (
+                  <h3>Loading...</h3>
+                ) : (
+                  <h3 onClick={handleWordClick} style={{ cursor: 'pointer' }}>
+                    {challengeWord ? challengeWord.english : 'Click Challenge to get a statement'}
+                  </h3>
+                )}
+                {showTranslation && challengeWord && (  // Check if challengeWord is defined before accessing it
+                  <p>{challengeWord.swedish}</p>
+                )}
+              </div>
+              <div className="button-container">
+                <button onClick={getRandomWord}>Challenge</button>
+                <button onClick={toggleTranslation}>Show</button>
+                <button onClick={handleShowAllWords}>
+                  {showAllWords ? 'Hide All' : 'Show All'}
+                </button>
+              </div>
+              {showAllWords && (
+                <div className="all-words">
+                  <h4>All Words in {selectedCategory.name}</h4>
+                  <ul>
+                    {selectedCategory.words.map((word, index) => (
+                      <li key={index}>
+                        <strong>{word.english}</strong>: {word.swedish}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+            </>
+          )}
+        </div>
+      );
     }
   };
 
   return (
     <div className="App">
-      <h2>Practice Your Words - {currentIndex + 1}</h2>
-
-      <div className="image-wrapper">
-        {loading && <div className="loading-spinner"></div>} {/* Spinner overlay */}
-        <img
-          src={images[currentIndex]}
-          alt="Random"
-          style={{ width: '325px', height: '500px' }}
-        />
+      <div className="tabs">
+        <button onClick={() => setActiveTab('tab1')} className={activeTab === 'tab1' ? 'active' : ''}>
+          Duolingo
+        </button>
+        <button onClick={() => setActiveTab('tab2')} className={activeTab === 'tab2' ? 'active' : ''}>
+          Statements
+        </button>
       </div>
-
-      <div style={{ display: 'flex', gap: '10px', marginTop: '10px', alignItems: 'center' }}>
-        <button onClick={loadFirstImage}>1</button> {/* Button for loading img1 */}
-        <button onClick={loadPreviousImage} disabled={currentIndex === 0}>←</button> {/* Previous button */}
-        <button onClick={loadRandomImage}>Reload</button> {/* Reload button */}
-        <button onClick={loadNextImage} disabled={currentIndex === images.length - 1}>→</button> {/* Next button */}
-      </div>
+      <div className="tab-content">{renderTabContent()}</div>
     </div>
   );
 }
