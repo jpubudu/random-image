@@ -2,38 +2,42 @@ import React, { useState } from 'react';
 import './App.css';
 
 function App() {
-const images = [
-  "/images/img1.jpg", "/images/img2.jpg", "/images/img3.jpg",
-  "/images/img4.jpg", "/images/img5.jpg", "/images/img6.jpg",
-  "/images/img7.jpg", "/images/img8.jpg", "/images/img9.jpg",
-  "/images/img10.jpg", "/images/img11.jpg", "/images/img12.jpg",
-  "/images/img13.jpg", "/images/img14.jpg", "/images/img15.jpg",
-  "/images/img16.jpg", "/images/img17.jpg", "/images/img18.jpg",
-  "/images/img19.jpg", "/images/img20.jpg", "/images/img21.jpg",
-  "/images/img22.jpg", "/images/img23.jpg", "/images/img24.jpg",
-  "/images/img25.jpg", "/images/img26.jpg", "/images/img27.jpg",
-  "/images/img28.jpg", "/images/img29.jpg", "/images/img30.jpg",
-  "/images/img31.jpg", "/images/img32.jpg", "/images/img33.jpg",
-  "/images/img34.jpg", "/images/img35.jpg", "/images/img36.jpg",
-  "/images/img37.jpg", "/images/img38.jpg", "/images/img39.jpg",
-  "/images/img40.jpg", "/images/img41.jpg", "/images/img42.jpg",
-  "/images/img43.jpg", "/images/img44.jpg", "/images/img45.jpg",
-  "/images/img46.jpg", "/images/img47.jpg", "/images/img48.jpg",
-  "/images/img49.jpg", "/images/img50.jpg", "/images/img51.jpg",
-  "/images/img52.jpg", "/images/img53.jpg", "/images/img54.jpg",
-  "/images/img55.jpg", "/images/img56.jpg", "/images/img57.jpg",
-  "/images/img58.jpg", "/images/img59.jpg", "/images/img60.jpg",
-  "/images/img61.jpg"
-];
+  const images = [
+    "/images/img1.jpg", "/images/img2.jpg", "/images/img3.jpg",
+    "/images/img4.jpg", "/images/img5.jpg", "/images/img6.jpg",
+    "/images/img7.jpg", "/images/img8.jpg", "/images/img9.jpg",
+    "/images/img10.jpg", "/images/img11.jpg", "/images/img12.jpg",
+    "/images/img13.jpg", "/images/img14.jpg", "/images/img15.jpg",
+    "/images/img16.jpg", "/images/img17.jpg", "/images/img18.jpg",
+    "/images/img19.jpg", "/images/img20.jpg", "/images/img21.jpg",
+    "/images/img22.jpg", "/images/img23.jpg", "/images/img24.jpg",
+    "/images/img25.jpg", "/images/img26.jpg", "/images/img27.jpg",
+    "/images/img28.jpg", "/images/img29.jpg", "/images/img30.jpg",
+    "/images/img31.jpg", "/images/img32.jpg", "/images/img33.jpg",
+    "/images/img34.jpg", "/images/img35.jpg", "/images/img36.jpg",
+    "/images/img37.jpg", "/images/img38.jpg", "/images/img39.jpg",
+    "/images/img40.jpg", "/images/img41.jpg", "/images/img42.jpg",
+    "/images/img43.jpg", "/images/img44.jpg", "/images/img45.jpg",
+    "/images/img46.jpg", "/images/img47.jpg", "/images/img48.jpg",
+    "/images/img49.jpg", "/images/img50.jpg", "/images/img51.jpg",
+    "/images/img52.jpg", "/images/img53.jpg", "/images/img54.jpg",
+    "/images/img55.jpg", "/images/img56.jpg", "/images/img57.jpg",
+    "/images/img58.jpg", "/images/img59.jpg", "/images/img60.jpg",
+    "/images/img61.jpg"
+  ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(false); // Loading state
 
-  // Function to load a random image and play sound
-  const loadRandomImage = () => {
+  // Function to play sound effect
+  const playSound = () => {
     const audio = new Audio('/click-sound.mp3'); // Path to the sound file
     audio.play(); // Play the sound effect
+  };
 
+  // Function to load a random image and play sound
+  const loadRandomImage = () => {
+    playSound(); // Play the sound effect
     setLoading(true); // Set loading state to true
 
     // Simulate a 1 second delay
@@ -42,6 +46,28 @@ const images = [
       setCurrentIndex(randomIndex); // Update the image
       setLoading(false); // Reset loading state
     }, 200); // 1-second delay
+  };
+
+  // Function to load the first image (img1.jpg)
+  const loadFirstImage = () => {
+    playSound(); // Play the sound effect
+    setCurrentIndex(0); // Set index to 0 for img1
+  };
+
+  // Function to load the previous image
+  const loadPreviousImage = () => {
+    if (currentIndex > 0) {
+      playSound(); // Play the sound effect
+      setCurrentIndex(prevIndex => prevIndex - 1); // Decrease index
+    }
+  };
+
+  // Function to load the next image
+  const loadNextImage = () => {
+    if (currentIndex < images.length - 1) {
+      playSound(); // Play the sound effect
+      setCurrentIndex(prevIndex => prevIndex + 1); // Increase index
+    }
   };
 
   return (
@@ -57,7 +83,12 @@ const images = [
         />
       </div>
 
-      <button onClick={loadRandomImage}>Refresh Image</button>
+      <div style={{ display: 'flex', gap: '10px', marginTop: '10px', alignItems: 'center' }}>
+        <button onClick={loadFirstImage}>1</button> {/* Button for loading img1 */}
+        <button onClick={loadPreviousImage} disabled={currentIndex === 0}>←</button> {/* Previous button */}
+        <button onClick={loadRandomImage}>Reload</button> {/* Reload button */}
+        <button onClick={loadNextImage} disabled={currentIndex === images.length - 1}>→</button> {/* Next button */}
+      </div>
     </div>
   );
 }
